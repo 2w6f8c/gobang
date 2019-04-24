@@ -1,1 +1,3 @@
 # gobang
+
+begin!
