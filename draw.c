@@ -2,7 +2,7 @@
 #include "def.h"
 
 // 绘制黑色实心点
-HRESULT _DrawBlackSolidPoint(HDC hdc, int radius, POINT postion) {
+HRESULT DrawBlackSolidPoint(HDC hdc, int radius, POINT postion) {
 	SelectObject(hdc, GetStockObject(BLACK_BRUSH));
 	Ellipse(hdc, postion.x - radius, postion.y - radius, postion.x + radius, postion.y + radius);
 	SelectObject(hdc, GetStockObject(WHITE_BRUSH));
@@ -11,7 +11,7 @@ HRESULT _DrawBlackSolidPoint(HDC hdc, int radius, POINT postion) {
 }
 
 // 绘制白色空心点
-HRESULT _DrawWhiteHollowPoint(HDC hdc, int radius, POINT postion) {
+HRESULT DrawWhiteHollowPoint(HDC hdc, int radius, POINT postion) {
 	SelectObject(hdc, GetStockObject(WHITE_BRUSH));
 	Ellipse(hdc, postion.x - radius, postion.y - radius, postion.x + radius, postion.y + radius);
 
@@ -22,7 +22,7 @@ HRESULT _DrawWhiteHollowPoint(HDC hdc, int radius, POINT postion) {
 HRESULT DrawChessBoard(HDC hdc, POINT ptLeftTop, int cxClient, int cyClient) {
 	// 获得一小格的宽度和高度
 	int cxCell = 0, cyCell = 0;
-	_GetCellWidthAndHeight(ptLeftTop, cxClient, cyClient, &cxCell, &cyCell);
+	GetCellWidthAndHeight(ptLeftTop, cxClient, cyClient, &cxCell, &cyCell);
 	// 绘制竖线
 	for (int col = 0; col < BOARD_CELL_NUM + 1; ++col) {
 		MoveToEx(hdc, ptLeftTop.x + col * cxCell, ptLeftTop.y, NULL);
@@ -50,16 +50,16 @@ HRESULT DrawChessBoard(HDC hdc, POINT ptLeftTop, int cxClient, int cyClient) {
 HRESULT DrawFiveHeavyPoint(HDC hdc, POINT ptLeftTop, int cxClient, int cyClient) {
 	// 获得一小格的宽度和高度
 	int cxCell = 0, cyCell = 0;
-	_GetCellWidthAndHeight(ptLeftTop, cxClient, cyClient, &cxCell, &cyCell);
+	GetCellWidthAndHeight(ptLeftTop, cxClient, cyClient, &cxCell, &cyCell);
 	// 将逻辑点转换为实际点
 	POINT logicalPoint[5] = { 3, 3, 3, 11, 11, 3, 11, 11, 7, 7 };
 	POINT actualPoint[5] = { 0 };
 	for (int cPt = 0; cPt < 5; ++cPt) {
-		_ExchangeActualPositon(logicalPoint[cPt], cxCell, cyCell, ptLeftTop, &actualPoint[cPt]);
+		ExchangeActualPositon(logicalPoint[cPt], cxCell, cyCell, ptLeftTop, &actualPoint[cPt]);
 	}
 	// 绘制五个黑色实心点
 	for (int cPt = 0; cPt < 5; ++cPt) {
-		_DrawBlackSolidPoint(hdc, FIVE_MARK_POINT_RADIUS, actualPoint[cPt]);
+		DrawBlackSolidPoint(hdc, FIVE_MARK_POINT_RADIUS, actualPoint[cPt]);
 	}
 
 	return S_OK;

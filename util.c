@@ -1,7 +1,7 @@
 #include "util.h"
 
 // 获取一小格宽度和高度
-HRESULT _GetCellWidthAndHeight(POINT ptLeftTop, int cxClient, int cyClient, int *cxCell, int *cyCell) {
+HRESULT GetCellWidthAndHeight(POINT ptLeftTop, int cxClient, int cyClient, int *cxCell, int *cyCell) {
 	*cxCell = (cxClient - ptLeftTop.x * 2) / BOARD_CELL_NUM;
 	*cyCell = (cyClient - ptLeftTop.y * 2) / BOARD_CELL_NUM;
 
@@ -9,10 +9,10 @@ HRESULT _GetCellWidthAndHeight(POINT ptLeftTop, int cxClient, int cyClient, int 
 }
 
 // 将实际坐标转化为逻辑坐标，这里需要进行实际点到棋盘点的转化
-HRESULT _ExChangeLogicalPosition(POINT actualPostion, POINT ptLeftTop, int cxClient, int cyClient, POINT *logicalPostion) {
+HRESULT ExChangeLogicalPosition(POINT actualPostion, POINT ptLeftTop, int cxClient, int cyClient, POINT *logicalPostion) {
 	// 获得一小格的宽度和高度
 	int cxCell = 0, cyCell = 0;
-	_GetCellWidthAndHeight(ptLeftTop, cxClient, cyClient, &cxCell, &cyCell);
+	GetCellWidthAndHeight(ptLeftTop, cxClient, cyClient, &cxCell, &cyCell);
 	// 检查点击有效性
 	if (actualPostion.x < ptLeftTop.x || actualPostion.x > ptLeftTop.x + BOARD_CELL_NUM * cxCell ||
 		actualPostion.y < ptLeftTop.y || actualPostion.y > ptLeftTop.y + BOARD_CELL_NUM * cyCell) {
@@ -70,7 +70,7 @@ HRESULT _ExChangeLogicalPosition(POINT actualPostion, POINT ptLeftTop, int cxCli
 }
 
 // 将逻辑坐标转化为实际坐标
-HRESULT _ExchangeActualPositon(POINT logicalPos, int cxCell, int cyCell, POINT ptLeftTop, POINT *actualPos) {
+HRESULT ExchangeActualPositon(POINT logicalPos, int cxCell, int cyCell, POINT ptLeftTop, POINT *actualPos) {
 	actualPos->x = ptLeftTop.x + logicalPos.x * cxCell;
 	actualPos->y = ptLeftTop.y + logicalPos.y * cyCell;
 
@@ -79,7 +79,7 @@ HRESULT _ExchangeActualPositon(POINT logicalPos, int cxCell, int cyCell, POINT p
 
 
 // 判断当前逻辑点的指定方向上是否有相邻点
-HRESULT _IsSidewardHasSamePoint(int chessPoints[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], POINT point, GameDirection direction, BOOLEAN *bSame, POINT *movedPoint) {
+HRESULT IsSidewardHasSamePoint(int chessPoints[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], POINT point, GameDirection direction, BOOLEAN *bSame, POINT *movedPoint) {
 	// 记录当前点的值
 	int curSideValue = chessPoints[point.x][point.y];
 	// 计算该方向的下一个逻辑点坐标
@@ -147,15 +147,15 @@ HRESULT _IsSidewardHasSamePoint(int chessPoints[BOARD_CELL_NUM + 1][BOARD_CELL_N
 }
 
 // 计算当前方向过去的同类棋子的个数
-HRESULT _CountSameDiretionPointsNumber(int chessPoints[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], POINT point, GameDirection direction, int *count) {
+HRESULT CountSameDiretionPointsNumber(int chessPoints[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], POINT point, GameDirection direction, int *count) {
 	(*count) += 1;
 	BOOLEAN bSame = FALSE;
 	POINT movedPoint = { point.x, point.y };
-	_IsSidewardHasSamePoint(chessPoints, point, direction, &bSame, &movedPoint);
+	IsSidewardHasSamePoint(chessPoints, point, direction, &bSame, &movedPoint);
 	if (bSame == TRUE) {
 		bSame = FALSE;
 		POINT movedmovedPoint = { movedPoint.x, movedPoint.y };
-		_CountSameDiretionPointsNumber(chessPoints, movedPoint, direction, count);
+		CountSameDiretionPointsNumber(chessPoints, movedPoint, direction, count);
 	}
 
 	return S_OK;
@@ -171,7 +171,7 @@ HRESULT IsSomeoneWin(int chessPoints[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], in
 				for (size_t direction = 0; direction < 8; ++direction) {
 					// 获取当前点此方向的最大同类棋子数
 					int count = 0;
-					_CountSameDiretionPointsNumber(chessPoints, point, direction, &count);
+					CountSameDiretionPointsNumber(chessPoints, point, direction, &count);
 					// 判定是否胜利
 					if (count >= 5) {
 						if (chessPoints[row][col] == BLACK_FLAG) {

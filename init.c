@@ -38,20 +38,20 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		actualPosition.x = LOWORD(lParam);
 		actualPosition.y = HIWORD(lParam);
 		// 获得对应的计算过后的逻辑点
-		hResult = _ExChangeLogicalPosition(actualPosition, ptLeftTop, cxClient, cyClient, &logicalPostion);
+		hResult = ExChangeLogicalPosition(actualPosition, ptLeftTop, cxClient, cyClient, &logicalPostion);
 		if (S_FALSE == hResult) {
 			return 0;
 		}
 		// 将逻辑点记录下来
 		chessPoints[logicalPostion.x][logicalPostion.y] = BLACK_FLAG;
 		// 获得一小格的宽度和高度
-		_GetCellWidthAndHeight(ptLeftTop, cxClient, cyClient, &cxCell, &cyCell);
+		GetCellWidthAndHeight(ptLeftTop, cxClient, cyClient, &cxCell, &cyCell);
 		// 将逻辑点转化为实际点
 		POINT changedActualPosition;
-		_ExchangeActualPositon(logicalPostion, cxCell, cyCell, ptLeftTop, &changedActualPosition);
+		ExchangeActualPositon(logicalPostion, cxCell, cyCell, ptLeftTop, &changedActualPosition);
 		// 绘制实际点
 		hdc = GetDC(hwnd);
-		_DrawBlackSolidPoint(hdc, CHESS_PIECE_RADIUS, changedActualPosition);
+		DrawBlackSolidPoint(hdc, CHESS_PIECE_RADIUS, changedActualPosition);
 		ReleaseDC(hwnd, hdc);
 		// 计算胜利
 		IsSomeoneWin(chessPoints, &winner);
@@ -67,19 +67,19 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		actualPosition.x = LOWORD(lParam);
 		actualPosition.y = HIWORD(lParam);
 		// 获得对应的计算过后的逻辑点
-		hResult = _ExChangeLogicalPosition(actualPosition, ptLeftTop, cxClient, cyClient, &logicalPostion);
+		hResult = ExChangeLogicalPosition(actualPosition, ptLeftTop, cxClient, cyClient, &logicalPostion);
 		if (S_FALSE == hResult) {
 			return 0;
 		}
 		// 将逻辑点记录下来
 		chessPoints[logicalPostion.x][logicalPostion.y] = WHITE_FLAG;
 		// 获得一小格的宽度和高度
-		_GetCellWidthAndHeight(ptLeftTop, cxClient, cyClient, &cxCell, &cyCell);
+		GetCellWidthAndHeight(ptLeftTop, cxClient, cyClient, &cxCell, &cyCell);
 		// 将逻辑点转化为实际点
-		_ExchangeActualPositon(logicalPostion, cxCell, cyCell, ptLeftTop, &changedActualPosition);
+		ExchangeActualPositon(logicalPostion, cxCell, cyCell, ptLeftTop, &changedActualPosition);
 		// 绘制实际点
 		hdc = GetDC(hwnd);
-		_DrawWhiteHollowPoint(hdc, CHESS_PIECE_RADIUS, changedActualPosition);
+		DrawWhiteHollowPoint(hdc, CHESS_PIECE_RADIUS, changedActualPosition);
 		ReleaseDC(hwnd, hdc);
 		// 计算胜利
 		IsSomeoneWin(chessPoints, &winner);
