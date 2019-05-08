@@ -5,7 +5,6 @@
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 	HWND hwnd;
 	MSG msg;
-
 	// 第一步,注册窗口类
 	RegisterMyWindow(hInstance);
 	// 第二步:创建窗口

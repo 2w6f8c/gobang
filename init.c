@@ -1,5 +1,5 @@
 #include "init.h"
-
+// git test
 // 用于注册的窗口类名
 const char szClassName[] = "myWindowClass";
 
