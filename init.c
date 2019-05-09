@@ -144,10 +144,9 @@ void RegisterMyWindow(HINSTANCE hInstance) {
 
 HWND CreateMyWindow(HINSTANCE hInstance, int nCmdShow) {
 	HWND hwnd;
-	hwnd = CreateWindowEx(
-		WS_EX_CLIENTEDGE,
+	hwnd = CreateWindow(
 		szClassName,
-		TEXT("我的窗口名称"),
+		TEXT("五子棋"),
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,

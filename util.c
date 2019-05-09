@@ -1,4 +1,5 @@
 #include "util.h"
+#include <math.h>
 
 // 获取一小格宽度和高度
 HRESULT GetCellWidthAndHeight(POINT ptLeftTop, int cxClient, int cyClient, int *cxCell, int *cyCell) {
