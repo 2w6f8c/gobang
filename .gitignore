@@ -1,2 +1,2 @@
-*vcxproj*
-Debug
+.idea
+cmake-build-debug
