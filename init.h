@@ -9,8 +9,10 @@
 
 // 事件响应
 LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 // 注册窗口
 void RegisterMyWindow(HINSTANCE hInstance);
+
 // 创建窗口
 HWND CreateMyWindow(HINSTANCE hInstance, int nCmdShow);
 
