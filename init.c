@@ -3,6 +3,7 @@
 // 用于注册的窗口类名
 const char szClassName[] = "myWindowClass";
 
+// 事件响应
 LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	HDC hdc;
 	PAINTSTRUCT ps;
@@ -117,6 +118,7 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
+// 注册窗口
 void RegisterMyWindow(HINSTANCE hInstance) {
 	WNDCLASSEX wc;
 
@@ -141,7 +143,7 @@ void RegisterMyWindow(HINSTANCE hInstance) {
 	}
 }
 
-
+// 创建窗口
 HWND CreateMyWindow(HINSTANCE hInstance, int nCmdShow) {
 	HWND hwnd;
 	hwnd = CreateWindow(
