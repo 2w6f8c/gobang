@@ -8,6 +8,11 @@
 #include "def.h"
 #include <windows.h>
 
+/**
+ * 电脑随机下棋，仅用于测试
+ * @param chessPoints
+ * @return
+ */
 POINT RandomPlay(int chessPoints[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1]);
 
 #endif //GOBANG_RANDOMPLAY_H
