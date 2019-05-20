@@ -1,4 +1,5 @@
 #include "init.h"
+#include "test/randomPlay.h"
 
 // 用于注册的窗口类名
 const char szClassName[] = "myWindowClass";
@@ -30,12 +31,17 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     HRESULT hResult = S_FALSE;
 
     switch (msg) {
+        // 窗口大小改变
         case WM_SIZE:
             cxClient = LOWORD(lParam);
             cyClient = HIWORD(lParam);
             return 0;
 
-        case WM_LBUTTONDOWN:    // 黑子
+        // 下棋
+        case WM_LBUTTONDOWN:
+            /**
+             * 玩家下棋
+             */
             // 获得实际点
             actualPosition.x = LOWORD(lParam);
             actualPosition.y = HIWORD(lParam);
@@ -63,16 +69,11 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             if (WHITE_FLAG == winner) {
                 MessageBox(hwnd, TEXT("白棋获胜！"), TEXT("提示"), NULL);
             }
-            return 0;
 
-        case WM_RBUTTONDOWN:    // 白子
-            actualPosition.x = LOWORD(lParam);
-            actualPosition.y = HIWORD(lParam);
-            // 获得对应的计算过后的逻辑点
-            hResult = ExChangeLogicalPosition(actualPosition, ptLeftTop, cxClient, cyClient, &logicalPostion);
-            if (S_FALSE == hResult) {
-                return 0;
-            }
+            /**
+             * 电脑下棋
+             */
+            logicalPostion = RandomPlay(chessPoints);
             // 将逻辑点记录下来
             chessPoints[logicalPostion.x][logicalPostion.y] = WHITE_FLAG;
             // 获得一小格的宽度和高度
@@ -91,9 +92,11 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             if (WHITE_FLAG == winner) {
                 MessageBox(hwnd, TEXT("白棋获胜！"), TEXT("提示"), NULL);
             }
+
             return 0;
 
-        case WM_MBUTTONDOWN:    // 初始化棋盘
+        // 初始化棋盘
+        case WM_MBUTTONDOWN:
             for (int row = 0; row < BOARD_CELL_NUM + 1; ++row) {
                 for (int col = 0; col < BOARD_CELL_NUM + 1; ++col) {
                     chessPoints[row][col] = 0;
@@ -102,6 +105,7 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             InvalidateRect(hwnd, NULL, TRUE);
             return 0;
 
+        // 绘图
         case WM_PAINT:
             hdc = BeginPaint(hwnd, &ps);
             // 初始化棋盘
@@ -111,6 +115,7 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             EndPaint(hwnd, &ps);
             return 0;
 
+        // 销毁
         case WM_DESTROY:
             PostQuitMessage(0);
             return 0;
