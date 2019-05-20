@@ -1,6 +1,6 @@
-#ifndef GAME_DROW
+#ifndef GAME_DRAW
 
-#define GAME_DROW
+#define GAME_DRAW
 
 #include<windows.h>
 
