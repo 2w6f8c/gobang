@@ -1,5 +1,5 @@
 #include "init.h"
-#include "test/randomPlay.h"
+#include "randomPlay.h"
 
 // 用于注册的窗口类名
 const char szClassName[] = "myWindowClass";
