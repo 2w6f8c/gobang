@@ -4,7 +4,6 @@
 
 #include "randomPlay.h"
 #include <stdlib.h>
-#include <time.h>
 
 /**
  * 电脑随机下棋，仅用于测试
@@ -12,7 +11,6 @@
  * @return
  */
 POINT RandomPlay(int chessPoints[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1]) {
-    srand(time(0));
     POINT point;
     int count = 0;
     for (int i = 0; i < BOARD_CELL_NUM + 1; i++)
