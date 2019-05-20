@@ -11,11 +11,11 @@ int AlphaBeta(int chessPoints[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int playe
     int n = BOARD_CELL_NUM + 1;
 
     if (player == AI_FLAG) {
-        for (int i = 0; i < n; i++){
+        for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (chessPoints[i][j] == NULL_FLAG) {
                     chessPoints[i][j] = AI_FLAG;
-                    int ans = AlphaBeta(chessPoints, PLAYER_FLAG, --depth, alpha, beta);
+                    int ans = AlphaBeta(chessPoints, PLAYER_FLAG, depth - 1, alpha, beta);
                     chessPoints[i][j] = NULL_FLAG;
                     if (ans > alpha) alpha = ans;
                     if (alpha >= beta) return alpha;
@@ -23,15 +23,15 @@ int AlphaBeta(int chessPoints[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int playe
             }
         }
         return alpha;
-    }else {
-        for (int i = 0; i < n; i++){
+    } else {
+        for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (chessPoints[i][j] == NULL_FLAG) {
                     chessPoints[i][j] = PLAYER_FLAG;
-                    int ans = AlphaBeta(chessPoints, AI_FLAG, --depth, alpha, beta);
+                    int ans = AlphaBeta(chessPoints, AI_FLAG, depth - 1, alpha, beta);
                     chessPoints[i][j] = NULL_FLAG;
                     if (ans < beta) beta = ans;
-                    if (alpha >= beta) return alpha;
+                    if (alpha >= beta) return beta;
                 }
             }
         }
@@ -40,16 +40,19 @@ int AlphaBeta(int chessPoints[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int playe
 
 }
 
-POINT NextPoint(int chessPoints[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int depth, int alpha, int beta) {
+POINT NextPoint(int chessPoints[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int depth) {
+
+    int alpha = -2147483648;
+    int beta = 2147483647;
 
     int n = BOARD_CELL_NUM + 1;
     POINT point;
 
-    for(int i = 0; i < n; i++) {
-        for(int j = 0; j < n; j++) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
             if (chessPoints[i][j] == NULL_FLAG) {
                 chessPoints[i][j] = AI_FLAG;
-                int ans = AlphaBeta(chessPoints, PLAYER_FLAG, --depth, alpha, beta);
+                int ans = AlphaBeta(chessPoints, PLAYER_FLAG, depth - 1, alpha, beta);
                 chessPoints[i][j] = NULL_FLAG;
                 if (ans > alpha) {
                     alpha = ans;

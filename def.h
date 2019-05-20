@@ -9,6 +9,7 @@
 #define AI_FLAG 2
 #define NULL_FLAG 0
 #define WIN_CONDITION 5
+#define ALPHA_BETA_DEPTH 3
 
 typedef enum Enum_Direction {
     Direction_Top = 0,

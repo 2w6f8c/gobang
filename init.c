@@ -1,5 +1,6 @@
 #include "init.h"
 #include "randomPlay.h"
+#include "alphaBeta.h"
 
 // 用于注册的窗口类名
 const char szClassName[] = "myWindowClass";
@@ -72,7 +73,7 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             /**
              * 电脑下棋
              */
-            logicalPostion = RandomPlay(chessPoints);
+            logicalPostion = NextPoint(chessPoints, ALPHA_BETA_DEPTH);
             // 将逻辑点记录下来
             chessPoints[logicalPostion.x][logicalPostion.y] = AI_FLAG;
             // 获得一小格的宽度和高度

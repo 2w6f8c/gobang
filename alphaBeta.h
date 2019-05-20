@@ -10,7 +10,7 @@
 
 int AlphaBeta(int chessPoints[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int player, int depth, int alpha, int beta);
 
-POINT NextPoint(int chessPoints[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int depth, int alpha, int beta);
+POINT NextPoint(int chessPoints[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int depth);
 
 
 #endif //GOBANG_ALPHABETA_H

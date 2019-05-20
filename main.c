@@ -1,7 +1,11 @@
 #include <windows.h>
+#include <stdlib.h>
+#include <time.h>
 #include "init.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+    // todo: test only
+    srand(time(0));
     HWND hwnd;
     MSG msg;
     // 第一步,注册窗口类
