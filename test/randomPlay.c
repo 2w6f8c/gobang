@@ -18,7 +18,7 @@ POINT RandomPlay(int chessPoints[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1]) {
 
     int index = rand() % count;
     count = 0;
-    for (int i = 0; i < BOARD_CELL_NUM + 1; i++)
+    for (int i = 0; i < BOARD_CELL_NUM + 1; i++) {
         for (int j = 0; j < BOARD_CELL_NUM + 1; j++) {
             if (chessPoints[i][j] == NULL_FLAG) count++;
             if (count == index + 1) {
@@ -27,6 +27,7 @@ POINT RandomPlay(int chessPoints[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1]) {
                 return point;
             }
         }
+    }
 }
 
 
