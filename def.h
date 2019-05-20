@@ -5,8 +5,8 @@
 #define BOARD_CELL_NUM 14
 #define FIVE_MARK_POINT_RADIUS 4
 #define CHESS_PIECE_RADIUS    13
-#define BLACK_FLAG 1
-#define WHITE_FLAG 2
+#define PLAYER_FLAG 1
+#define AI_FLAG 2
 #define NULL_FLAG 0
 #define WIN_CONDITION 5
 

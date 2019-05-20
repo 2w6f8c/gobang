@@ -170,9 +170,9 @@ HRESULT IsSomeoneWin(int chessPoints[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], in
                     CountSameDiretionPointsNumber(chessPoints, point, direction, &count);
                     // 判定是否胜利
                     if (count >= 5) {
-                        if (chessPoints[row][col] == BLACK_FLAG) {
+                        if (chessPoints[row][col] == PLAYER_FLAG) {
                             MessageBox(NULL, TEXT("黑棋获胜！"), TEXT("提示"), MB_OK);
-                        } else if (chessPoints[row][col] == WHITE_FLAG) {
+                        } else if (chessPoints[row][col] == AI_FLAG) {
                             MessageBox(NULL, TEXT("白棋获胜！"), TEXT("提示"), MB_OK);
                         }
                     }
