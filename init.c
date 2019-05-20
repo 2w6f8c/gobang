@@ -4,10 +4,11 @@
 const char szClassName[] = "myWindowClass";
 
 // 事件响应
+// 流程控制
 LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     HDC hdc;
     PAINTSTRUCT ps;
-    // 客户区坐标
+    // 客户端坐标
     static int cxClient, cyClient;
     // 每个方格的宽度和高度
     int cxCell = 0, cyCell = 0;

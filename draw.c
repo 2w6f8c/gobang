@@ -1,5 +1,6 @@
 #include "draw.h"
 #include "def.h"
+#include "util.h"
 
 // 绘制黑色实心点
 HRESULT DrawBlackSolidPoint(HDC hdc, int radius, POINT postion) {
