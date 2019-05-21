@@ -25,7 +25,7 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     // 鼠标点击实际点计算转化来的逻辑点对应的实际点
     POINT changedActualPosition;
     // 记录逻辑位置的数组，其中PLAYER_FLAG为黑子，AI_FLAG为白子，NULL_FLAG为空白
-    static int chessPoints[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1] = {NULL_FLAG};
+    static int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1] = {NULL_FLAG};
     // 胜利者
     int winner = NULL_FLAG;
     // 函数返回值
@@ -52,7 +52,7 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 return 0;
             }
             // 将逻辑点记录下来
-            chessPoints[logicalPostion.x][logicalPostion.y] = PLAYER_FLAG;
+            board[logicalPostion.x][logicalPostion.y] = PLAYER_FLAG;
             // 获得一小格的宽度和高度
             GetCellWidthAndHeight(ptLeftTop, cxClient, cyClient, &cxCell, &cyCell);
             // 将逻辑点转化为实际点
@@ -62,7 +62,7 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             DrawBlackSolidPoint(hdc, CHESS_PIECE_RADIUS, changedActualPosition);
             ReleaseDC(hwnd, hdc);
             // 计算胜利
-            IsSomeoneWin(chessPoints, &winner);
+            IsSomeoneWin(board, &winner);
             if (PLAYER_FLAG == winner) {
                 MessageBox(hwnd, TEXT("玩家获胜！"), TEXT("提示"), NULL);
             }
@@ -73,9 +73,9 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             /**
              * 电脑下棋
              */
-            logicalPostion = NextPoint(chessPoints, ALPHA_BETA_DEPTH);
+            logicalPostion = NextPoint(board, ALPHA_BETA_DEPTH);
             // 将逻辑点记录下来
-            chessPoints[logicalPostion.x][logicalPostion.y] = AI_FLAG;
+            board[logicalPostion.x][logicalPostion.y] = AI_FLAG;
             // 获得一小格的宽度和高度
             GetCellWidthAndHeight(ptLeftTop, cxClient, cyClient, &cxCell, &cyCell);
             // 将逻辑点转化为实际点
@@ -85,7 +85,7 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             DrawWhiteHollowPoint(hdc, CHESS_PIECE_RADIUS, changedActualPosition);
             ReleaseDC(hwnd, hdc);
             // 计算胜利
-            IsSomeoneWin(chessPoints, &winner);
+            IsSomeoneWin(board, &winner);
             if (PLAYER_FLAG == winner) {
                 MessageBox(hwnd, TEXT("玩家获胜！"), TEXT("提示"), NULL);
             }
@@ -99,7 +99,7 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         case WM_MBUTTONDOWN:
             for (int row = 0; row < BOARD_CELL_NUM + 1; ++row) {
                 for (int col = 0; col < BOARD_CELL_NUM + 1; ++col) {
-                    chessPoints[row][col] = 0;
+                    board[row][col] = 0;
                 }
             }
             InvalidateRect(hwnd, NULL, TRUE);
