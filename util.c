@@ -71,7 +71,7 @@ ExChangeLogicalPosition(POINT actualPostion, POINT ptLeftTop, int cxClient, int 
 }
 
 // 将逻辑坐标转化为实际坐标
-HRESULT ExchangeActualPositon(POINT logicalPos, int cxCell, int cyCell, POINT ptLeftTop, POINT *actualPos) {
+HRESULT ExchangeActualPosition(POINT logicalPos, int cxCell, int cyCell, POINT ptLeftTop, POINT *actualPos) {
     actualPos->x = ptLeftTop.x + logicalPos.x * cxCell;
     actualPos->y = ptLeftTop.y + logicalPos.y * cyCell;
 
@@ -142,7 +142,7 @@ IsSidewardHasSamePoint(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], POINT 
 }
 
 // 计算当前方向过去的同类棋子的个数
-HRESULT CountSameDiretionPointsNumber(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], POINT point,
+HRESULT CountSameDirectionPointsNumber(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], POINT point,
                                       GameDirection direction, int *count) {
     (*count) += 1;
     BOOLEAN bSame = FALSE;
@@ -151,7 +151,7 @@ HRESULT CountSameDiretionPointsNumber(int board[BOARD_CELL_NUM + 1][BOARD_CELL_N
     if (bSame == TRUE) {
         bSame = FALSE;
         POINT movedmovedPoint = {movedPoint.x, movedPoint.y};
-        CountSameDiretionPointsNumber(board, movedPoint, direction, count);
+        CountSameDirectionPointsNumber(board, movedPoint, direction, count);
     }
 
     return S_OK;
@@ -167,7 +167,7 @@ HRESULT IsSomeoneWin(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int *win
                 for (size_t direction = 0; direction < 8; ++direction) {
                     // 获取当前点此方向的最大同类棋子数
                     int count = 0;
-                    CountSameDiretionPointsNumber(board, point, direction, &count);
+                    CountSameDirectionPointsNumber(board, point, direction, &count);
                     // 判定是否胜利
                     if (count >= 5) {
                         if (board[row][col] == PLAYER_FLAG) {

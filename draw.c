@@ -56,7 +56,7 @@ HRESULT DrawFiveHeavyPoint(HDC hdc, POINT ptLeftTop, int cxClient, int cyClient)
     POINT logicalPoint[5] = {3, 3, 3, 11, 11, 3, 11, 11, 7, 7};
     POINT actualPoint[5] = {0};
     for (int cPt = 0; cPt < 5; ++cPt) {
-        ExchangeActualPositon(logicalPoint[cPt], cxCell, cyCell, ptLeftTop, &actualPoint[cPt]);
+        ExchangeActualPosition(logicalPoint[cPt], cxCell, cyCell, ptLeftTop, &actualPoint[cPt]);
     }
     // 绘制五个黑色实心点
     for (int cPt = 0; cPt < 5; ++cPt) {

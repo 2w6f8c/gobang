@@ -56,7 +56,7 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             // 获得一小格的宽度和高度
             GetCellWidthAndHeight(ptLeftTop, cxClient, cyClient, &cxCell, &cyCell);
             // 将逻辑点转化为实际点
-            ExchangeActualPositon(logicalPostion, cxCell, cyCell, ptLeftTop, &changedActualPosition);
+            ExchangeActualPosition(logicalPostion, cxCell, cyCell, ptLeftTop, &changedActualPosition);
             // 绘制实际点
             hdc = GetDC(hwnd);
             DrawBlackSolidPoint(hdc, CHESS_PIECE_RADIUS, changedActualPosition);
@@ -79,7 +79,7 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             // 获得一小格的宽度和高度
             GetCellWidthAndHeight(ptLeftTop, cxClient, cyClient, &cxCell, &cyCell);
             // 将逻辑点转化为实际点
-            ExchangeActualPositon(logicalPostion, cxCell, cyCell, ptLeftTop, &changedActualPosition);
+            ExchangeActualPosition(logicalPostion, cxCell, cyCell, ptLeftTop, &changedActualPosition);
             // 绘制实际点
             hdc = GetDC(hwnd);
             DrawWhiteHollowPoint(hdc, CHESS_PIECE_RADIUS, changedActualPosition);
