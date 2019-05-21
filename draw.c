@@ -3,18 +3,18 @@
 #include "util.h"
 
 // 绘制黑色实心点
-HRESULT DrawBlackSolidPoint(HDC hdc, int radius, POINT postion) {
+HRESULT DrawBlackSolidPoint(HDC hdc, int radius, POINT position) {
     SelectObject(hdc, GetStockObject(BLACK_BRUSH));
-    Ellipse(hdc, postion.x - radius, postion.y - radius, postion.x + radius, postion.y + radius);
+    Ellipse(hdc, position.x - radius, position.y - radius, position.x + radius, position.y + radius);
     SelectObject(hdc, GetStockObject(WHITE_BRUSH));
 
     return S_OK;
 }
 
 // 绘制白色空心点
-HRESULT DrawWhiteHollowPoint(HDC hdc, int radius, POINT postion) {
+HRESULT DrawWhiteHollowPoint(HDC hdc, int radius, POINT position) {
     SelectObject(hdc, GetStockObject(WHITE_BRUSH));
-    Ellipse(hdc, postion.x - radius, postion.y - radius, postion.x + radius, postion.y + radius);
+    Ellipse(hdc, position.x - radius, position.y - radius, position.x + radius, position.y + radius);
 
     return S_OK;
 }
