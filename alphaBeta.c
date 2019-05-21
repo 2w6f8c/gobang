@@ -5,12 +5,12 @@
 #include "alphaBeta.h"
 #include "evaluate.h"
 
-int AlphaBeta(int chessPoints[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int player, int depth, int alpha, int beta) {
-    if (depth == 0) return evaluate(chessPoints, player);
+int AlphaBeta(int chessPoints[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int role, int depth, int alpha, int beta) {
+    if (depth == 0) return Evaluate(chessPoints);
 
     int n = BOARD_CELL_NUM + 1;
 
-    if (player == AI_FLAG) {
+    if (role == AI_FLAG) {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (chessPoints[i][j] == NULL_FLAG) {

@@ -8,7 +8,7 @@
 #include "def.h"
 #include <windows.h>
 
-int AlphaBeta(int chessPoints[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int player, int depth, int alpha, int beta);
+int AlphaBeta(int chessPoints[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int role, int depth, int alpha, int beta);
 
 POINT NextPoint(int chessPoints[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int depth);
 
