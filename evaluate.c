@@ -192,7 +192,7 @@ int ScorePoint(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], POINT point, i
     int px = point.x, py = point.y;
 
     // -形
-    if (dir == NULL || dir == 0) {
+    if (dir < 0 || dir == 0) {
         count = 1;
         block = 0;
         empty = -1;
@@ -253,7 +253,7 @@ int ScorePoint(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], POINT point, i
     result += scoreCache[role][0][px][py];
 
     // |形
-    if (dir == NULL || dir == 1) {
+    if (dir < 0 || dir == 1) {
 
         count = 1;
         block = 0;
@@ -314,7 +314,7 @@ int ScorePoint(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], POINT point, i
     result += scoreCache[role][1][px][py];
 
     // \形
-    if (dir == NULL || dir == 2) {
+    if (dir < 0 || dir == 2) {
         count = 1;
         block = 0;
         empty = -1;
@@ -375,7 +375,7 @@ int ScorePoint(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], POINT point, i
     result += scoreCache[role][2][px][py];
 
     // /形
-    if (dir == NULL || dir == 3) {
+    if (dir < 0 || dir == 3) {
         count = 1;
         block = 0;
         empty = -1;
@@ -432,15 +432,16 @@ int ScorePoint(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], POINT point, i
 
         count += secondCount;
 
-        scoreCache[role][3][px][py] = CastToScore(count, block, empty);
+//        scoreCache[role][3][px][py] = CastToScore(count, block, empty);
+        result += CastToScore(count, block, empty);
     }
-    result += scoreCache[role][3][px][py];
+//    result += scoreCache[role][3][px][py];
 
     return result;
 
 }
 
-extern accumulate;
+extern int accumulate;
 
 // 评估函数
 int Evaluate(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1]) {
@@ -449,16 +450,19 @@ int Evaluate(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1]) {
 
     int ans = 0;
     int n = BOARD_CELL_NUM + 1;
-    n = 13;
+//    n = 14;
+
+//    POINT point = {12, 12};
+//    ScorePoint(board, point, AI_FLAG, -1);
+
 
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             POINT point = {i, j};
-            ans += ScorePoint(board, point, AI_FLAG, NULL) - ScorePoint(board, point, PLAYER_FLAG, NULL);
-//            printf("evaluate (%d, %d): %d\n", i, j, ans);
+            ans += ScorePoint(board, point, AI_FLAG, -1) - ScorePoint(board, point, PLAYER_FLAG, -1);
+//            ans += rand() % 1000 - 500;
         }
     }
-
 
     return ans;
 }

@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 
-extern accumulate;
+extern int accumulate;
 
 
 int AlphaBeta(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int role, int depth, int alpha, int beta) {
