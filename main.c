@@ -3,6 +3,8 @@
 #include <time.h>
 #include "init.h"
 
+int accumulate = 0;
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
     // todo: test only
     srand(time(0));

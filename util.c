@@ -11,13 +11,13 @@ HRESULT GetCellWidthAndHeight(POINT ptLeftTop, int cxClient, int cyClient, int *
 
 // 将实际坐标转化为逻辑坐标，这里需要进行实际点到棋盘点的转化
 HRESULT
-ExChangeLogicalPosition(POINT actualPostion, POINT ptLeftTop, int cxClient, int cyClient, POINT *logicalPostion) {
+ExChangeLogicalPosition(POINT actualPosition, POINT ptLeftTop, int cxClient, int cyClient, POINT *logicalPosition) {
     // 获得一小格的宽度和高度
     int cxCell = 0, cyCell = 0;
     GetCellWidthAndHeight(ptLeftTop, cxClient, cyClient, &cxCell, &cyCell);
     // 检查点击有效性
-    if (actualPostion.x < ptLeftTop.x || actualPostion.x > ptLeftTop.x + BOARD_CELL_NUM * cxCell ||
-        actualPostion.y < ptLeftTop.y || actualPostion.y > ptLeftTop.y + BOARD_CELL_NUM * cyCell) {
+    if (actualPosition.x < ptLeftTop.x || actualPosition.x > ptLeftTop.x + BOARD_CELL_NUM * cxCell ||
+        actualPosition.y < ptLeftTop.y || actualPosition.y > ptLeftTop.y + BOARD_CELL_NUM * cyCell) {
         MessageBox(NULL, TEXT("请点击棋盘内下棋！"), TEXT("提示"), MB_OK);
         return S_FALSE;
     }
@@ -25,7 +25,7 @@ ExChangeLogicalPosition(POINT actualPostion, POINT ptLeftTop, int cxClient, int 
     int xCount = 0, yCount = 0;
     POINT sidePoints[4] = {0};
     for (int x = ptLeftTop.x; x <= ptLeftTop.x + BOARD_CELL_NUM * cxCell; x += cxCell, xCount++) {
-        if (actualPostion.x >= x && actualPostion.x <= x + cxCell) {
+        if (actualPosition.x >= x && actualPosition.x <= x + cxCell) {
             sidePoints[0].x = x;
             sidePoints[2].x = x;
             sidePoints[1].x = x + cxCell;
@@ -34,7 +34,7 @@ ExChangeLogicalPosition(POINT actualPostion, POINT ptLeftTop, int cxClient, int 
         }
     }
     for (int y = ptLeftTop.y; y <= ptLeftTop.y + BOARD_CELL_NUM * cyCell; y += cyCell, yCount++) {
-        if (actualPostion.y >= y && actualPostion.y <= y + cyCell) {
+        if (actualPosition.y >= y && actualPosition.y <= y + cyCell) {
             sidePoints[0].y = y;
             sidePoints[1].y = y;
             sidePoints[2].y = y + cyCell;
@@ -46,7 +46,7 @@ ExChangeLogicalPosition(POINT actualPostion, POINT ptLeftTop, int cxClient, int 
     double lengthCount[4] = {0};
     for (int item = 0; item < 4; ++item) {
         lengthCount[item] =
-                pow(abs(sidePoints[item].x - actualPostion.x), 2) + pow(abs(sidePoints[item].y - actualPostion.y), 2);
+                pow(abs(sidePoints[item].x - actualPosition.x), 2) + pow(abs(sidePoints[item].y - actualPosition.y), 2);
     }
     // 获取四个距离值中最短的一个
     int shortestIndex = 0;
@@ -64,8 +64,8 @@ ExChangeLogicalPosition(POINT actualPostion, POINT ptLeftTop, int cxClient, int 
         xCount += 1;
         yCount += 1;
     }
-    logicalPostion->x = xCount;
-    logicalPostion->y = yCount;
+    logicalPosition->x = xCount;
+    logicalPosition->y = yCount;
 
     return S_OK;
 }
@@ -150,7 +150,7 @@ HRESULT CountSameDirectionPointsNumber(int board[BOARD_CELL_NUM + 1][BOARD_CELL_
     IsSidewardHasSamePoint(board, point, direction, &bSame, &movedPoint);
     if (bSame == TRUE) {
         bSame = FALSE;
-        POINT movedmovedPoint = {movedPoint.x, movedPoint.y};
+//        POINT movedPoint = {movedPoint.x, movedPoint.y};
         CountSameDirectionPointsNumber(board, movedPoint, direction, count);
     }
 

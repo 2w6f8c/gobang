@@ -5,6 +5,11 @@
 #include "alphaBeta.h"
 #include "evaluate.h"
 
+#include <stdio.h>
+
+extern accumulate;
+
+
 int AlphaBeta(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int role, int depth, int alpha, int beta) {
     if (depth == 0) return Evaluate(board);
 
@@ -42,6 +47,8 @@ int AlphaBeta(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int role, int d
 
 POINT NextPoint(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int depth) {
 
+    accumulate = 0;
+
     int alpha = -2147483648;
     int beta = 2147483647;
 
@@ -63,6 +70,8 @@ POINT NextPoint(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int depth) {
         }
 
     }
+
+    printf("times: %d\n", accumulate);
 
     return point;
 
