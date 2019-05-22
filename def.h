@@ -8,7 +8,6 @@
 #define PLAYER_FLAG 1
 #define AI_FLAG 2
 #define NULL_FLAG 0
-#define WIN_CONDITION 5
 #define ALPHA_BETA_DEPTH 2
 
 typedef enum Enum_Direction {
@@ -22,8 +21,6 @@ typedef enum Enum_Direction {
     Direction_LeftTop = 7
 } GameDirection;
 
-int scoreCache[2][4][BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1];
-int aiScore[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1];
-int playerScore[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1];
+int scoreCache[2][BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1];
 
 #endif // !GAME_DEF
