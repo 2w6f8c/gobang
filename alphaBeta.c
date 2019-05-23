@@ -4,11 +4,9 @@
 
 #include "alphaBeta.h"
 #include "evaluate.h"
-
 #include <stdio.h>
 
-extern int accumulate;
-
+int accumulate = 0;
 
 int AlphaBeta(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int role, int depth, int alpha, int beta) {
     if (depth == 0) return Evaluate(board);

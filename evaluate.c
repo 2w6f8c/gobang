@@ -8,6 +8,8 @@
 
 #include <stdio.h>
 
+extern int accumulate;
+
 int CastToScore(int count, int block, int empty) {
     //没有空位
     if (empty <= 0) {
@@ -417,8 +419,6 @@ int ScorePoint(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], POINT point, i
     return scoreCache[role][px][py];
 
 }
-
-extern int accumulate;
 
 // 评估函数
 int Evaluate(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1]) {
