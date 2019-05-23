@@ -41,7 +41,7 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
             // 下棋
         case WM_LBUTTONDOWN:
-            if(winner != NULL_FLAG) {
+            if (winner != NULL_FLAG) {
                 MessageBox(hwnd, TEXT("胜负已决！\n按鼠标滑轮重开"), TEXT("提示"), NULL);
                 return 0;
             }
@@ -102,9 +102,9 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             // 初始化棋盘
         case WM_MBUTTONDOWN:
             winner = NULL_FLAG;
-            for (int row = 0; row < BOARD_CELL_NUM + 1; ++row) {
-                for (int col = 0; col < BOARD_CELL_NUM + 1; ++col) {
-                    board[row][col] = 0;
+            for (int i = 0; i < BOARD_CELL_NUM + 1; i++) {
+                for (int j = 0; j < BOARD_CELL_NUM + 1; j++) {
+                    board[i][j] = 0;
                 }
             }
             InvalidateRect(hwnd, NULL, TRUE);
@@ -113,16 +113,18 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             // 绘图
         case WM_PAINT:
             hdc = BeginPaint(hwnd, &ps);
+
             // 初始化棋盘
-            DrawChessBoard(hdc, ptLeftTop, cxClient, cyClient);            // 绘制棋盘
-            DrawFiveHeavyPoint(hdc, ptLeftTop, cxClient, cyClient);        // 绘制五个着重点
-            EndPaint(hwnd, &ps);
+            // 绘制棋盘
+            DrawChessBoard(hdc, ptLeftTop, cxClient, cyClient);
+            // 绘制五个着重点
+            DrawFiveHeavyPoint(hdc, ptLeftTop, cxClient, cyClient);
 
             /**
              * 电脑先手
              */
-            logicalPosition = NextPoint(board, ALPHA_BETA_DEPTH);
-            // 将逻辑点记录下来
+            POINT point = {7, 7};
+            logicalPosition = point;
             board[logicalPosition.x][logicalPosition.y] = AI_FLAG;
             printf("computer put at (%d, %d)\n", logicalPosition.x, logicalPosition.y);
             // 获得一小格的宽度和高度
@@ -130,9 +132,9 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             // 将逻辑点转化为实际点
             ExchangeActualPosition(logicalPosition, cxCell, cyCell, ptLeftTop, &changedActualPosition);
             // 绘制实际点
-            hdc = GetDC(hwnd);
             DrawWhiteHollowPoint(hdc, CHESS_PIECE_RADIUS, changedActualPosition);
-            ReleaseDC(hwnd, hdc);
+
+            EndPaint(hwnd, &ps);
             return 0;
 
             // 销毁
