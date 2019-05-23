@@ -170,11 +170,7 @@ HRESULT IsSomeoneWin(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int *win
                     CountSameDirectionPointsNumber(board, point, direction, &count);
                     // 判定是否胜利
                     if (count >= 5) {
-                        if (board[row][col] == PLAYER_FLAG) {
-                            MessageBox(NULL, TEXT("黑棋获胜！"), TEXT("提示"), MB_OK);
-                        } else if (board[row][col] == AI_FLAG) {
-                            MessageBox(NULL, TEXT("白棋获胜！"), TEXT("提示"), MB_OK);
-                        }
+                        *winner = board[row][col];
                     }
                 }
             }
@@ -182,4 +178,13 @@ HRESULT IsSomeoneWin(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int *win
     }
 
     return S_OK;
+}
+
+void PrintBoard(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1]) {
+    for(int i = 0; i < BOARD_CELL_NUM + 1; i++) {
+        for(int j = 0; j < BOARD_CELL_NUM + 1; j++) {
+            printf("%d ", board[j][i]);
+        }
+        printf("\n");
+    }
 }

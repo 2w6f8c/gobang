@@ -3,6 +3,7 @@
 #define GAME_UTIL
 
 #include <windows.h>
+#include <stdio.h>
 #include "def.h"
 
 // 获取一小格宽度和高度
@@ -26,5 +27,8 @@ HRESULT CountSameDircetionPointsNumber(int board[BOARD_CELL_NUM + 1][BOARD_CELL_
 
 // 判定是否胜利
 HRESULT IsSomeoneWin(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int *winner);
+
+// 打印棋盘
+void PrintBoard(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1]);
 
 #endif // !GAME_UTIL

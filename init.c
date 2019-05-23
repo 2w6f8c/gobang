@@ -28,9 +28,9 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     // 记录逻辑位置的数组，其中PLAYER_FLAG为黑子，AI_FLAG为白子，NULL_FLAG为空白
     static int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1] = {NULL_FLAG};
     // 胜利者
-    int winner = NULL_FLAG;
+    static int winner = NULL_FLAG;
     // 函数返回值
-    HRESULT hResult = S_FALSE;
+    HRESULT hResult;
 
     switch (msg) {
         // 窗口大小改变
@@ -41,6 +41,10 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
             // 下棋
         case WM_LBUTTONDOWN:
+            if(winner != NULL_FLAG) {
+                MessageBox(hwnd, TEXT("胜负已决！\n按鼠标滑轮重开"), TEXT("提示"), NULL);
+                return 0;
+            }
             /**
              * 玩家下棋
              */
@@ -52,6 +56,7 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             if (S_FALSE == hResult) {
                 return 0;
             }
+            if (board[logicalPosition.x][logicalPosition.y] != NULL_FLAG) return 0;
             // 将逻辑点记录下来
             board[logicalPosition.x][logicalPosition.y] = PLAYER_FLAG;
             printf("player put at (%d, %d)\n", logicalPosition.x, logicalPosition.y);
@@ -67,25 +72,16 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             IsSomeoneWin(board, &winner);
             if (PLAYER_FLAG == winner) {
                 MessageBox(hwnd, TEXT("玩家获胜！"), TEXT("提示"), NULL);
-            }
-            if (AI_FLAG == winner) {
-                MessageBox(hwnd, TEXT("电脑获胜！"), TEXT("提示"), NULL);
+                return 0;
             }
 
             /**
              * 电脑下棋
              */
             logicalPosition = NextPoint(board, ALPHA_BETA_DEPTH);
-            // logicalPosition = RandomPlay(board);
             // 将逻辑点记录下来
             board[logicalPosition.x][logicalPosition.y] = AI_FLAG;
             printf("computer put at (%d, %d)\n", logicalPosition.x, logicalPosition.y);
-//            for(int i = 0; i < BOARD_CELL_NUM + 1; i++) {
-//                for(int j = 0; j < BOARD_CELL_NUM + 1; j++) {
-//                    printf("%d ", board[j][i]);
-//                }
-//                printf("\n");
-//            }
             // 获得一小格的宽度和高度
             GetCellWidthAndHeight(ptLeftTop, cxClient, cyClient, &cxCell, &cyCell);
             // 将逻辑点转化为实际点
@@ -96,17 +92,16 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             ReleaseDC(hwnd, hdc);
             // 计算胜利
             IsSomeoneWin(board, &winner);
-            if (PLAYER_FLAG == winner) {
-                MessageBox(hwnd, TEXT("玩家获胜！"), TEXT("提示"), NULL);
-            }
             if (AI_FLAG == winner) {
                 MessageBox(hwnd, TEXT("电脑获胜！"), TEXT("提示"), NULL);
+                return 0;
             }
 
             return 0;
 
             // 初始化棋盘
         case WM_MBUTTONDOWN:
+            winner = NULL_FLAG;
             for (int row = 0; row < BOARD_CELL_NUM + 1; ++row) {
                 for (int col = 0; col < BOARD_CELL_NUM + 1; ++col) {
                     board[row][col] = 0;
@@ -121,8 +116,23 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             // 初始化棋盘
             DrawChessBoard(hdc, ptLeftTop, cxClient, cyClient);            // 绘制棋盘
             DrawFiveHeavyPoint(hdc, ptLeftTop, cxClient, cyClient);        // 绘制五个着重点
-
             EndPaint(hwnd, &ps);
+
+            /**
+             * 电脑先手
+             */
+            logicalPosition = NextPoint(board, ALPHA_BETA_DEPTH);
+            // 将逻辑点记录下来
+            board[logicalPosition.x][logicalPosition.y] = AI_FLAG;
+            printf("computer put at (%d, %d)\n", logicalPosition.x, logicalPosition.y);
+            // 获得一小格的宽度和高度
+            GetCellWidthAndHeight(ptLeftTop, cxClient, cyClient, &cxCell, &cyCell);
+            // 将逻辑点转化为实际点
+            ExchangeActualPosition(logicalPosition, cxCell, cyCell, ptLeftTop, &changedActualPosition);
+            // 绘制实际点
+            hdc = GetDC(hwnd);
+            DrawWhiteHollowPoint(hdc, CHESS_PIECE_RADIUS, changedActualPosition);
+            ReleaseDC(hwnd, hdc);
             return 0;
 
             // 销毁
