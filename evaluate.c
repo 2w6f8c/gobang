@@ -193,7 +193,7 @@ void Reset(int *count, int *block, int *empty, int *secondCount) {
     *secondCount = 0;
 }
 
-int ScorePoint(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], POINT point, int role, int dir) {
+int ScorePoint(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], POINT point, int role) {
     int empty = 0, count = 0, block = 0, secondCount = 0;
     int len = BOARD_CELL_NUM + 1;
     int px = point.x, py = point.y;
@@ -431,7 +431,7 @@ int Evaluate(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1]) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             POINT point = {i, j};
-            ans += ScorePoint(board, point, AI_FLAG, -1) - ScorePoint(board, point, PLAYER_FLAG, -1);
+            ans += ScorePoint(board, point, AI_FLAG) - ScorePoint(board, point, PLAYER_FLAG);
         }
     }
 
