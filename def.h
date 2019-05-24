@@ -8,7 +8,7 @@
 #define PLAYER_FLAG 0
 #define AI_FLAG 1
 #define NULL_FLAG 2
-#define ALPHA_BETA_DEPTH 2
+#define ALPHA_BETA_DEPTH 3
 
 typedef enum Enum_Direction {
     Direction_Top = 0,

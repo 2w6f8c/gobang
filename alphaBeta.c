@@ -4,24 +4,44 @@
 
 #include "alphaBeta.h"
 #include "evaluate.h"
+#include "engine.h"
 #include <stdio.h>
+#include <time.h>
 
-int accumulate = 0;
+extern int times;
 
+double start = 0.0;
+static int alphaCount = 0;
+static int betaCount = 0;
+
+/**
+ * α-β剪枝算法
+ * @param role 电脑或玩家
+ * @param depth 搜索深度
+ * @param alpha
+ * @param beta
+ * @return
+ */
 int AlphaBeta(int role, int depth, int alpha, int beta) {
-    if (depth == 0) return Evaluate(board);
+    if (depth == 0) return Evaluate();
 
     int n = BOARD_CELL_NUM + 1;
+    POINT point;
 
     if (role == AI_FLAG) {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (board[i][j] == NULL_FLAG) {
-                    board[i][j] = AI_FLAG;
+                    point.x = i;
+                    point.y = j;
+                    PutChess(point, AI_FLAG);
                     int ans = AlphaBeta(PLAYER_FLAG, depth - 1, alpha, beta);
-                    board[i][j] = NULL_FLAG;
+                    UnPutChess(point);
                     if (ans > alpha) alpha = ans;
-                    if (alpha >= beta) return alpha;
+                    if (alpha >= beta) {
+                        ++alphaCount;
+                        return alpha;
+                    }
                 }
             }
         }
@@ -30,11 +50,16 @@ int AlphaBeta(int role, int depth, int alpha, int beta) {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (board[i][j] == NULL_FLAG) {
-                    board[i][j] = PLAYER_FLAG;
+                    point.x = i;
+                    point.y = j;
+                    PutChess(point, PLAYER_FLAG);
                     int ans = AlphaBeta(AI_FLAG, depth - 1, alpha, beta);
-                    board[i][j] = NULL_FLAG;
+                    UnPutChess(point);
                     if (ans < beta) beta = ans;
-                    if (alpha >= beta) return beta;
+                    if (alpha >= beta) {
+                        ++betaCount;
+                        return beta;
+                    }
                 }
             }
         }
@@ -45,33 +70,42 @@ int AlphaBeta(int role, int depth, int alpha, int beta) {
 
 POINT NextPoint(int depth) {
 
-    accumulate = 0;
+    times = 0;
+    alphaCount = 0;
+    betaCount = 0;
+    start = clock();
 
     int alpha = -2147483648;
     int beta = 2147483647;
 
     int n = BOARD_CELL_NUM + 1;
-    POINT point;
+    POINT point, result;
 
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             if (board[i][j] == NULL_FLAG) {
-                board[i][j] = AI_FLAG;
+                point.x = i;
+                point.y = j;
+                PutChess(point, AI_FLAG);
                 int ans = AlphaBeta(PLAYER_FLAG, depth - 1, alpha, beta);
-                board[i][j] = NULL_FLAG;
+                UnPutChess(point);
                 if (ans > alpha) {
                     alpha = ans;
-                    point.x = i;
-                    point.y = j;
+                    result.x = i;
+                    result.y = j;
                 }
             }
         }
 
     }
 
-    printf("times: %d\n", accumulate);
+    printf("搜索深度: %d\n", ALPHA_BETA_DEPTH);
+    printf("α剪枝次数: %d\n", alphaCount);
+    printf("β剪枝次数: %d\n", betaCount);
+    printf("棋局评分次数: %d\n", times);
+    printf("耗时: %.3fs\n", (clock() - start) / CLOCKS_PER_SEC);
 
-    return point;
+    return result;
 
 }
 

@@ -21,4 +21,10 @@ HRESULT IsSomeoneWin(int *winner);
 // 打印棋盘
 void PrintBoard();
 
+// 下子并更新分数
+void PutChess(POINT point, int role);
+
+// 取消下子并更新分数
+void UnPutChess(POINT point);
+
 #endif // !GAME_UTIL

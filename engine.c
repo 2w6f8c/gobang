@@ -1,4 +1,6 @@
 #include "engine.h"
+#include "evaluate.h"
+#include "stdio.h"
 
 // 判断当前逻辑点的指定方向上是否有相邻点
 HRESULT
@@ -100,6 +102,7 @@ HRESULT IsSomeoneWin(int *winner) {
     return S_OK;
 }
 
+// 打印棋盘
 void PrintBoard() {
     for(int i = 0; i < BOARD_CELL_NUM + 1; i++) {
         for(int j = 0; j < BOARD_CELL_NUM + 1; j++) {
@@ -107,4 +110,16 @@ void PrintBoard() {
         }
         printf("\n");
     }
+}
+
+// 下子并更新分数
+void PutChess(POINT point, int role) {
+    board[point.x][point.y] = role;
+    UpdateScore(point);
+}
+
+// 取消下子并更新分数
+void UnPutChess(POINT point) {
+    board[point.x][point.y] = NULL_FLAG;
+    UpdateScore(point);
 }

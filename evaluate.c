@@ -8,8 +8,7 @@
 
 #include <stdio.h>
 
-extern int accumulate;
-
+int times = 0;
 int scoreCache[2][BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1] = {0};
 
 int CastToScore(int count, int block, int empty) {
@@ -195,14 +194,88 @@ void Reset(int *count, int *block, int *empty, int *secondCount) {
     *secondCount = 0;
 }
 
-int UpdateSingleScore(POINT point, int role) {
-    int empty = 0, count = 0, block = 0, secondCount = 0;
-    int len = BOARD_CELL_NUM + 1;
+// 在当前位置下子后，更新当前位置及附近位置的评分
+void UpdateScore(POINT point) {
+    int radius = 4;
     int px = point.x, py = point.y;
+    int len = BOARD_CELL_NUM + 1;
+    POINT tmp;
 
+    // 更新(px, py)的分数
+    UpdateSingleScore(point, AI_FLAG);
+    UpdateSingleScore(point, PLAYER_FLAG);
+
+    // -向
+    tmp.x = px;
+    for(int i = py + 1; i < len && i <= py + radius; i++) {
+        tmp.y = i;
+        UpdateSingleScore(tmp, AI_FLAG);
+        UpdateSingleScore(tmp, PLAYER_FLAG);
+    }
+
+    for(int i = py - 1; i >= 0 && i >= py - radius; i--) {
+        tmp.y = i;
+        UpdateSingleScore(tmp, AI_FLAG);
+        UpdateSingleScore(tmp, PLAYER_FLAG);
+    }
+
+    // |向
+    tmp.y = py;
+    for(int i = px + 1; i < len && i <= px + radius; i++) {
+        tmp.x = i;
+        UpdateSingleScore(tmp, AI_FLAG);
+        UpdateSingleScore(tmp, PLAYER_FLAG);
+    }
+
+    for(int i = px - 1; i >= 0 && i >= px - radius; i--) {
+        tmp.x = i;
+        UpdateSingleScore(tmp, AI_FLAG);
+        UpdateSingleScore(tmp, PLAYER_FLAG);
+    }
+
+    // \向
+    for(int i = 1; i <= radius && (py + i) < len && (px + i) < len; i++) {
+        tmp.x = px + i;
+        tmp.y = py + i;
+        UpdateSingleScore(tmp, AI_FLAG);
+        UpdateSingleScore(tmp, PLAYER_FLAG);
+    }
+
+    for(int i = 1; i <= radius && (py - i) >= 0 && (px - i) >= 0; i++) {
+        tmp.x = px - i;
+        tmp.y = py - i;
+        UpdateSingleScore(tmp, AI_FLAG);
+        UpdateSingleScore(tmp, PLAYER_FLAG);
+    }
+
+    // /向
+    for(int i = 1; i <= radius && (py + i) < len && (px - i) >= 0; i++) {
+        tmp.x = px - i;
+        tmp.y = py + i;
+        UpdateSingleScore(tmp, AI_FLAG);
+        UpdateSingleScore(tmp, PLAYER_FLAG);
+    }
+
+    for(int i = 1; i <= radius && (py - i) >= 0 && (px + i) < len; i++) {
+        tmp.x = px + i;
+        tmp.y = py - i;
+        UpdateSingleScore(tmp, AI_FLAG);
+        UpdateSingleScore(tmp, PLAYER_FLAG);
+    }
+}
+
+// 计算在当前位置下子后得到的分数
+// 如果当前位置不是己方棋子，则将当前角色在此位置的得分置为0
+int UpdateSingleScore(POINT point, int role) {
+    int px = point.x, py = point.y;
     scoreCache[role][px][py] = 0;
 
-    // -形
+    if(board[px][py] != role) return 0;
+
+    int empty = 0, count = 0, block = 0, secondCount = 0;
+    int len = BOARD_CELL_NUM + 1;
+
+    // -向
     Reset(&count, &block, &empty, &secondCount);
     for (int i = py + 1;; i++) {
         if (i >= len) {
@@ -255,7 +328,7 @@ int UpdateSingleScore(POINT point, int role) {
     scoreCache[role][px][py] += CastToScore(count, block, empty);
 
 
-    // |形
+    // |向
     Reset(&count, &block, &empty, &secondCount);
     for (int i = px + 1;; i++) {
         if (i >= len) {
@@ -308,7 +381,7 @@ int UpdateSingleScore(POINT point, int role) {
     scoreCache[role][px][py] += CastToScore(count, block, empty);
 
 
-    // \形
+    // \向
     Reset(&count, &block, &empty, &secondCount);
     for (int i = 1;; i++) {
         int x = px + i, y = py + i;
@@ -363,7 +436,7 @@ int UpdateSingleScore(POINT point, int role) {
     scoreCache[role][px][py] += CastToScore(count, block, empty);
 
 
-    // /形
+    // /向
     Reset(&count, &block, &empty, &secondCount);
     for (int i = 1;; i++) {
         int x = px + i, y = py - i;
@@ -422,17 +495,14 @@ int UpdateSingleScore(POINT point, int role) {
 
 // 评估函数
 int Evaluate() {
-
-    accumulate++;
+    ++times;
 
     int ans = 0;
     int n = BOARD_CELL_NUM + 1;
 
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            POINT point = {i, j};
-            ans += UpdateSingleScore(point, AI_FLAG) - UpdateSingleScore(point, PLAYER_FLAG);
-//            ans += scoreCache[AI_FLAG][i][j] - scoreCache[PLAYER_FLAG][i][j];
+            ans += scoreCache[AI_FLAG][i][j] - scoreCache[PLAYER_FLAG][i][j];
         }
     }
 

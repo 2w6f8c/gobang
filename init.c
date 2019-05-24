@@ -1,6 +1,7 @@
 #include "init.h"
 #include "randomPlay.h"
 #include "alphaBeta.h"
+#include "engine.h"
 #include <stdio.h>
 
 // 用于注册的窗口类名
@@ -71,8 +72,7 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 return 0;
             }
             if (board[logicalPosition.x][logicalPosition.y] != NULL_FLAG) return 0;
-            // 将逻辑点记录下来
-            board[logicalPosition.x][logicalPosition.y] = PLAYER_FLAG;
+            PutChess(logicalPosition, PLAYER_FLAG);
             printf("player put at (%d, %d)\n", logicalPosition.x, logicalPosition.y);
             // 获得一小格的宽度和高度
             GetCellWidthAndHeight(ptLeftTop, cxClient, cyClient, &cxCell, &cyCell);
@@ -93,8 +93,7 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
              * 电脑下棋
              */
             logicalPosition = NextPoint(ALPHA_BETA_DEPTH);
-            // 将逻辑点记录下来
-            board[logicalPosition.x][logicalPosition.y] = AI_FLAG;
+            PutChess(logicalPosition, AI_FLAG);
             printf("computer put at (%d, %d)\n", logicalPosition.x, logicalPosition.y);
             // 获得一小格的宽度和高度
             GetCellWidthAndHeight(ptLeftTop, cxClient, cyClient, &cxCell, &cyCell);
@@ -133,13 +132,12 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
              * 电脑先手
              */
             POINT point = {7, 7};
-            logicalPosition = point;
-            board[logicalPosition.x][logicalPosition.y] = AI_FLAG;
-            printf("computer put at (%d, %d)\n", logicalPosition.x, logicalPosition.y);
+            PutChess(point, AI_FLAG);
+            printf("computer put at (%d, %d)\n", point.x, point.y);
             // 获得一小格的宽度和高度
             GetCellWidthAndHeight(ptLeftTop, cxClient, cyClient, &cxCell, &cyCell);
             // 将逻辑点转化为实际点
-            ExchangeActualPosition(logicalPosition, cxCell, cyCell, ptLeftTop, &changedActualPosition);
+            ExchangeActualPosition(point, cxCell, cyCell, ptLeftTop, &changedActualPosition);
             // 绘制实际点
             DrawWhiteHollowPoint(hdc, CHESS_PIECE_RADIUS, changedActualPosition);
 
