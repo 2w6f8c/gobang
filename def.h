@@ -11,6 +11,6 @@
 #define ALPHA_BETA_DEPTH 3
 
 extern int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1];
-extern int scoreCache[2][BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1];
+extern int score[2][BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1];
 
 #endif // !GAME_DEF

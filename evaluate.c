@@ -9,7 +9,7 @@
 #include <stdio.h>
 
 int times = 0;
-int scoreCache[2][BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1] = {0};
+int score[2][BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1] = {0};
 
 static int CastToScore(int count, int block, int empty) {
     //没有空位
@@ -198,7 +198,7 @@ static void Reset(int *count, int *block, int *empty, int *secondCount) {
 // 如果当前位置不是己方棋子，则将当前角色在此位置的得分置为0
 static int UpdateSingleScore(POINT point, int role) {
     int px = point.x, py = point.y;
-    scoreCache[role][px][py] = 0;
+    score[role][px][py] = 0;
 
     if(board[px][py] != role) return 0;
 
@@ -255,7 +255,7 @@ static int UpdateSingleScore(POINT point, int role) {
     }
 
     count += secondCount;
-    scoreCache[role][px][py] += CastToScore(count, block, empty);
+    score[role][px][py] += CastToScore(count, block, empty);
 
 
     // |向
@@ -308,7 +308,7 @@ static int UpdateSingleScore(POINT point, int role) {
     }
 
     count += secondCount;
-    scoreCache[role][px][py] += CastToScore(count, block, empty);
+    score[role][px][py] += CastToScore(count, block, empty);
 
 
     // \向
@@ -363,7 +363,7 @@ static int UpdateSingleScore(POINT point, int role) {
     }
 
     count += secondCount;
-    scoreCache[role][px][py] += CastToScore(count, block, empty);
+    score[role][px][py] += CastToScore(count, block, empty);
 
 
     // /向
@@ -418,9 +418,9 @@ static int UpdateSingleScore(POINT point, int role) {
     }
 
     count += secondCount;
-    scoreCache[role][px][py] += CastToScore(count, block, empty);
+    score[role][px][py] += CastToScore(count, block, empty);
 
-    return scoreCache[role][px][py];
+    return score[role][px][py];
 }
 
 
@@ -504,7 +504,7 @@ int Evaluate() {
 
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            ans += scoreCache[AI_FLAG][i][j] - scoreCache[PLAYER_FLAG][i][j];
+            ans += score[AI_FLAG][i][j] - score[PLAYER_FLAG][i][j];
         }
     }
 

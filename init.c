@@ -17,8 +17,8 @@ void Init() {
     for(int i = 0; i < BOARD_CELL_NUM + 1; i++) {
         for(int j = 0; j < BOARD_CELL_NUM + 1; j++) {
             board[i][j] = NULL_FLAG;
-            scoreCache[AI_FLAG][i][j] = 0;
-            scoreCache[PLAYER_FLAG][i][j] = 0;
+            score[AI_FLAG][i][j] = 0;
+            score[PLAYER_FLAG][i][j] = 0;
         }
     }
 
