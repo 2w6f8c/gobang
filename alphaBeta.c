@@ -10,12 +10,12 @@
 
 extern int times;
 
-double start = 0.0;
+static double start = 0.0;
 static int alphaCount = 0;
 static int betaCount = 0;
 
 // ¦Á-¦Â¼ôÖ¦Ëã·¨
-int AlphaBeta(int role, int depth, int alpha, int beta) {
+static int AlphaBeta(int role, int depth, int alpha, int beta) {
     if (depth == 0) return Evaluate();
 
     int n = BOARD_CELL_NUM + 1;

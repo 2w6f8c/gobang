@@ -9,7 +9,7 @@ const char szClassName[] = "myWindowClass";
 // 记录逻辑位置的数组，其中PLAYER_FLAG为黑子，AI_FLAG为白子，NULL_FLAG为空白
 int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1] = {0};
 // 胜利者
-int winner = NULL_FLAG;
+static int winner = NULL_FLAG;
 
 // 初始化
 void Init() {

@@ -25,8 +25,4 @@ int Evaluate();
 // 在当前位置下子后，更新当前位置及附近位置的评分
 void UpdateScore(POINT point);
 
-// 计算在当前位置下子后得到的分数
-// 如果当前位置不是己方棋子，则将当前角色在此位置的得分置为0
-int UpdateSingleScore(POINT point, int role);
-
 #endif //GOBANG_EVALUATE_H
