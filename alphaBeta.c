@@ -14,14 +14,7 @@ double start = 0.0;
 static int alphaCount = 0;
 static int betaCount = 0;
 
-/**
- * α-β剪枝算法
- * @param role 电脑或玩家
- * @param depth 搜索深度
- * @param alpha
- * @param beta
- * @return
- */
+// α-β剪枝算法
 int AlphaBeta(int role, int depth, int alpha, int beta) {
     if (depth == 0) return Evaluate();
 
@@ -68,6 +61,7 @@ int AlphaBeta(int role, int depth, int alpha, int beta) {
 
 }
 
+// 通过α-β剪枝算法得到下一步落子位置
 POINT NextPoint(int depth) {
 
     times = 0;
