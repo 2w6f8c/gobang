@@ -13,6 +13,6 @@
  * @param board
  * @return
  */
-POINT RandomPlay(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1]);
+POINT RandomPlay();
 
 #endif //GOBANG_RANDOMPLAY_H

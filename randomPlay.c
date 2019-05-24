@@ -10,7 +10,7 @@
  * @param board
  * @return
  */
-POINT RandomPlay(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1]) {
+POINT RandomPlay() {
     POINT point;
     int count = 0;
     for (int i = 0; i < BOARD_CELL_NUM + 1; i++)

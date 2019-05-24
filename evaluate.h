@@ -17,8 +17,12 @@
 
 
 #include "def.h"
+#include <windows.h>
 
 // 评估函数
-int Evaluate(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1]);
+int Evaluate();
+
+// 计算某一方对应点的分数
+int UpdateSingleScore(POINT point, int role);
 
 #endif //GOBANG_EVALUATE_H

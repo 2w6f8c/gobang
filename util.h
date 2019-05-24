@@ -18,17 +18,17 @@ HRESULT ExchangeActualPosition(POINT logicalPos, int cxCell, int cyCell, POINT p
 
 // 判断当前逻辑点的指定方向上是否有相邻点
 HRESULT
-IsSidewardHasSamePoint(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], POINT point, GameDirection direction,
+IsSidewardHasSamePoint(POINT point, GameDirection direction,
                        BOOLEAN *bSame, POINT *movedPoint);
 
 // 计算当前方向过去的同类棋子的个数
-HRESULT CountSameDircetionPointsNumber(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], POINT point,
+HRESULT CountSameDircetionPointsNumber(POINT point,
                                       GameDirection direction, int *count);
 
 // 判定是否胜利
-HRESULT IsSomeoneWin(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int *winner);
+HRESULT IsSomeoneWin(int *winner);
 
 // 打印棋盘
-void PrintBoard(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1]);
+void PrintBoard();
 
 #endif // !GAME_UTIL

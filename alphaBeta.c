@@ -8,7 +8,7 @@
 
 int accumulate = 0;
 
-int AlphaBeta(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int role, int depth, int alpha, int beta) {
+int AlphaBeta(int role, int depth, int alpha, int beta) {
     if (depth == 0) return Evaluate(board);
 
     int n = BOARD_CELL_NUM + 1;
@@ -18,7 +18,7 @@ int AlphaBeta(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int role, int d
             for (int j = 0; j < n; j++) {
                 if (board[i][j] == NULL_FLAG) {
                     board[i][j] = AI_FLAG;
-                    int ans = AlphaBeta(board, PLAYER_FLAG, depth - 1, alpha, beta);
+                    int ans = AlphaBeta(PLAYER_FLAG, depth - 1, alpha, beta);
                     board[i][j] = NULL_FLAG;
                     if (ans > alpha) alpha = ans;
                     if (alpha >= beta) return alpha;
@@ -31,7 +31,7 @@ int AlphaBeta(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int role, int d
             for (int j = 0; j < n; j++) {
                 if (board[i][j] == NULL_FLAG) {
                     board[i][j] = PLAYER_FLAG;
-                    int ans = AlphaBeta(board, AI_FLAG, depth - 1, alpha, beta);
+                    int ans = AlphaBeta(AI_FLAG, depth - 1, alpha, beta);
                     board[i][j] = NULL_FLAG;
                     if (ans < beta) beta = ans;
                     if (alpha >= beta) return beta;
@@ -43,7 +43,7 @@ int AlphaBeta(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int role, int d
 
 }
 
-POINT NextPoint(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int depth) {
+POINT NextPoint(int depth) {
 
     accumulate = 0;
 
@@ -57,7 +57,7 @@ POINT NextPoint(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], int depth) {
         for (int j = 0; j < n; j++) {
             if (board[i][j] == NULL_FLAG) {
                 board[i][j] = AI_FLAG;
-                int ans = AlphaBeta(board, PLAYER_FLAG, depth - 1, alpha, beta);
+                int ans = AlphaBeta(PLAYER_FLAG, depth - 1, alpha, beta);
                 board[i][j] = NULL_FLAG;
                 if (ans > alpha) {
                     alpha = ans;

@@ -16,4 +16,7 @@ void RegisterMyWindow(HINSTANCE hInstance);
 // 创建窗口
 HWND CreateMyWindow(HINSTANCE hInstance, int nCmdShow);
 
+// 初始化
+void Init();
+
 #endif // !GAME_INIT

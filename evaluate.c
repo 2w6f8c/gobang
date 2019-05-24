@@ -10,6 +10,8 @@
 
 extern int accumulate;
 
+int scoreCache[2][BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1] = {0};
+
 int CastToScore(int count, int block, int empty) {
     //没有空位
     if (empty <= 0) {
@@ -193,7 +195,7 @@ void Reset(int *count, int *block, int *empty, int *secondCount) {
     *secondCount = 0;
 }
 
-int ScorePoint(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], POINT point, int role) {
+int UpdateSingleScore(POINT point, int role) {
     int empty = 0, count = 0, block = 0, secondCount = 0;
     int len = BOARD_CELL_NUM + 1;
     int px = point.x, py = point.y;
@@ -415,13 +417,11 @@ int ScorePoint(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1], POINT point, i
     count += secondCount;
     scoreCache[role][px][py] += CastToScore(count, block, empty);
 
-
     return scoreCache[role][px][py];
-
 }
 
 // 评估函数
-int Evaluate(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1]) {
+int Evaluate() {
 
     accumulate++;
 
@@ -431,7 +431,8 @@ int Evaluate(int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1]) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             POINT point = {i, j};
-            ans += ScorePoint(board, point, AI_FLAG) - ScorePoint(board, point, PLAYER_FLAG);
+            ans += UpdateSingleScore(point, AI_FLAG) - UpdateSingleScore(point, PLAYER_FLAG);
+//            ans += scoreCache[AI_FLAG][i][j] - scoreCache[PLAYER_FLAG][i][j];
         }
     }
 

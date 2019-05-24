@@ -5,6 +5,23 @@
 
 // 用于注册的窗口类名
 const char szClassName[] = "myWindowClass";
+// 记录逻辑位置的数组，其中PLAYER_FLAG为黑子，AI_FLAG为白子，NULL_FLAG为空白
+int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1] = {0};
+// 胜利者
+int winner = NULL_FLAG;
+
+// 初始化
+void Init() {
+    winner = NULL_FLAG;
+    for(int i = 0; i < BOARD_CELL_NUM + 1; i++) {
+        for(int j = 0; j < BOARD_CELL_NUM + 1; j++) {
+            board[i][j] = NULL_FLAG;
+            scoreCache[AI_FLAG][i][j] = 0;
+            scoreCache[PLAYER_FLAG][i][j] = 0;
+        }
+    }
+
+}
 
 // 事件响应
 // 流程控制
@@ -25,10 +42,7 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     POINT logicalPosition;
     // 鼠标点击实际点计算转化来的逻辑点对应的实际点
     POINT changedActualPosition;
-    // 记录逻辑位置的数组，其中PLAYER_FLAG为黑子，AI_FLAG为白子，NULL_FLAG为空白
-    static int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1] = {NULL_FLAG};
-    // 胜利者
-    static int winner = NULL_FLAG;
+
     // 函数返回值
     HRESULT hResult;
 
@@ -69,8 +83,8 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             DrawBlackSolidPoint(hdc, CHESS_PIECE_RADIUS, changedActualPosition);
             ReleaseDC(hwnd, hdc);
             // 计算胜利
-            IsSomeoneWin(board, &winner);
-            if (PLAYER_FLAG == winner) {
+            IsSomeoneWin(&winner);
+            if (winner == PLAYER_FLAG) {
                 MessageBox(hwnd, TEXT("玩家获胜！"), TEXT("提示"), NULL);
                 return 0;
             }
@@ -78,7 +92,7 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             /**
              * 电脑下棋
              */
-            logicalPosition = NextPoint(board, ALPHA_BETA_DEPTH);
+            logicalPosition = NextPoint(ALPHA_BETA_DEPTH);
             // 将逻辑点记录下来
             board[logicalPosition.x][logicalPosition.y] = AI_FLAG;
             printf("computer put at (%d, %d)\n", logicalPosition.x, logicalPosition.y);
@@ -91,8 +105,8 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             DrawWhiteHollowPoint(hdc, CHESS_PIECE_RADIUS, changedActualPosition);
             ReleaseDC(hwnd, hdc);
             // 计算胜利
-            IsSomeoneWin(board, &winner);
-            if (AI_FLAG == winner) {
+            IsSomeoneWin(&winner);
+            if (winner == AI_FLAG) {
                 MessageBox(hwnd, TEXT("电脑获胜！"), TEXT("提示"), NULL);
                 return 0;
             }
@@ -101,12 +115,7 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
             // 初始化棋盘
         case WM_MBUTTONDOWN:
-            winner = NULL_FLAG;
-            for (int i = 0; i < BOARD_CELL_NUM + 1; i++) {
-                for (int j = 0; j < BOARD_CELL_NUM + 1; j++) {
-                    board[i][j] = 0;
-                }
-            }
+            Init();
             InvalidateRect(hwnd, NULL, TRUE);
             return 0;
 
