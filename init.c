@@ -2,14 +2,17 @@
 #include "randomPlay.h"
 #include "alphaBeta.h"
 #include "engine.h"
+#include "stack.h"
 #include <stdio.h>
 
 // 用于注册的窗口类名
 const char szClassName[] = "myWindowClass";
 // 记录逻辑位置的数组，其中PLAYER_FLAG为黑子，AI_FLAG为白子，NULL_FLAG为空白
-int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1] = {0};
+int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1];
 // 胜利者
 static int winner = NULL_FLAG;
+
+static Stack stack = NULL;
 
 // 初始化
 void Init() {
@@ -22,10 +25,23 @@ void Init() {
         }
     }
 
+    if (stack) freeStack(stack);
+    stack = newStack();
+
     // 电脑先手
     POINT point = {7, 7};
     PutChess(point, AI_FLAG);
-    printf("init: computer put at (%d, %d)\n", point.x, point.y);
+    printf("========================================\n");
+    printf("computer put at (%d, %d)\n", point.x, point.y);
+}
+
+// 悔棋
+static void Undo() {
+    printf("undo...\n");
+    winner = NULL_FLAG;
+    // 依次撤销电脑落子和玩家落子
+    if(!isEmpty(stack)) UnPutChess(pop(stack));
+    if(!isEmpty(stack)) UnPutChess(pop(stack));
 }
 
 // 事件响应
@@ -62,7 +78,7 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         case WM_LBUTTONDOWN:
             // 已分出胜负则直接返回
             if (winner != NULL_FLAG) {
-                MessageBox(hwnd, TEXT("胜负已决！\n按鼠标滑轮重开"), TEXT("提示"), NULL);
+                MessageBox(hwnd, TEXT("胜负已决！\n点击鼠标右键悔棋\n按鼠标滑轮重开"), TEXT("提示"), NULL);
                 return 0;
             }
 
@@ -79,6 +95,8 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             }
             if (board[logicalPosition.x][logicalPosition.y] != NULL_FLAG) return 0;
             PutChess(logicalPosition, PLAYER_FLAG);
+            // 记录操作步骤
+            push(stack, logicalPosition);
             printf("player put at (%d, %d)\n", logicalPosition.x, logicalPosition.y);
             // 获得一小格的宽度和高度
             GetCellWidthAndHeight(ptLeftTop, cxClient, cyClient, &cxCell, &cyCell);
@@ -100,6 +118,8 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
              */
             logicalPosition = NextPoint(ALPHA_BETA_DEPTH);
             PutChess(logicalPosition, AI_FLAG);
+            // 记录操作步骤
+            push(stack, logicalPosition);
             printf("computer put at (%d, %d)\n", logicalPosition.x, logicalPosition.y);
             // 获得一小格的宽度和高度
             GetCellWidthAndHeight(ptLeftTop, cxClient, cyClient, &cxCell, &cyCell);
@@ -117,12 +137,16 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             }
 
             return 0;
-
             // 初始化棋盘
         case WM_MBUTTONDOWN:
             Init();
             InvalidateRect(hwnd, NULL, TRUE);
             return 0;
+            // 右击悔棋
+        case WM_RBUTTONDOWN:
+            Undo();
+            InvalidateRect(hwnd, NULL, TRUE);
+            // 没有return是因为希望重新绘图
 
             // 绘图
         case WM_PAINT:
@@ -176,7 +200,7 @@ HWND CreateMyWindow(HINSTANCE hInstance, int nCmdShow) {
     HWND hwnd;
     hwnd = CreateWindow(
             szClassName,
-            TEXT("五子棋"),
+            TEXT("五子棋 （左键下棋 中键重开 右键悔棋）"),
             WS_OVERLAPPEDWINDOW,
             CW_USEDEFAULT,
             CW_USEDEFAULT,
