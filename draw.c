@@ -20,6 +20,32 @@ HRESULT DrawWhiteHollowPoint(HDC hdc, int radius, POINT position) {
     return S_OK;
 }
 
+// 绘制所有下的棋子
+HRESULT DrawAllChess(HDC hdc, POINT ptLeftTop, int cxClient, int cyClient) {
+    POINT point, actualPosition;
+    // 获得一小格的宽度和高度
+    int cxCell = 0, cyCell = 0;
+    GetCellWidthAndHeight(ptLeftTop, cxClient, cyClient, &cxCell, &cyCell);
+
+    for(int i = 0; i < BOARD_CELL_NUM + 1; i++) {
+        for(int j = 0; j < BOARD_CELL_NUM + 1; j++) {
+            if (board[i][j] == NULL_FLAG) continue;
+            point.x = i;
+            point.y = j;
+            // 将逻辑点转化为实际点
+            ExchangeActualPosition(point, cxCell, cyCell, ptLeftTop, &actualPosition);
+            // 绘制实际点
+            if(board[i][j] == AI_FLAG){
+                DrawWhiteHollowPoint(hdc, CHESS_PIECE_RADIUS, actualPosition);
+            }else{
+                DrawBlackSolidPoint(hdc, CHESS_PIECE_RADIUS, actualPosition);
+            }
+        }
+    }
+
+    return S_OK;
+}
+
 // 绘制棋盘
 HRESULT DrawChessBoard(HDC hdc, POINT ptLeftTop, int cxClient, int cyClient) {
     // 获得一小格的宽度和高度

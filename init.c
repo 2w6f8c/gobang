@@ -14,14 +14,18 @@ static int winner = NULL_FLAG;
 // 初始化
 void Init() {
     winner = NULL_FLAG;
-    for(int i = 0; i < BOARD_CELL_NUM + 1; i++) {
-        for(int j = 0; j < BOARD_CELL_NUM + 1; j++) {
+    for (int i = 0; i < BOARD_CELL_NUM + 1; i++) {
+        for (int j = 0; j < BOARD_CELL_NUM + 1; j++) {
             board[i][j] = NULL_FLAG;
             score[AI_FLAG][i][j] = 0;
             score[PLAYER_FLAG][i][j] = 0;
         }
     }
 
+    // 电脑先手
+    POINT point = {7, 7};
+    PutChess(point, AI_FLAG);
+    printf("init: computer put at (%d, %d)\n", point.x, point.y);
 }
 
 // 事件响应
@@ -127,19 +131,8 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             DrawChessBoard(hdc, ptLeftTop, cxClient, cyClient);
             // 绘制五个着重点
             DrawFiveHeavyPoint(hdc, ptLeftTop, cxClient, cyClient);
-
-            /**
-             * 电脑先手（增加点难度?）
-             */
-            POINT point = {7, 7};
-            PutChess(point, AI_FLAG);
-            printf("computer put at (%d, %d)\n", point.x, point.y);
-            // 获得一小格的宽度和高度
-            GetCellWidthAndHeight(ptLeftTop, cxClient, cyClient, &cxCell, &cyCell);
-            // 将逻辑点转化为实际点
-            ExchangeActualPosition(point, cxCell, cyCell, ptLeftTop, &changedActualPosition);
-            // 绘制实际点
-            DrawWhiteHollowPoint(hdc, CHESS_PIECE_RADIUS, changedActualPosition);
+            // 绘制棋子
+            DrawAllChess(hdc, ptLeftTop, cxClient, cyClient);
 
             EndPaint(hwnd, &ps);
             return 0;
