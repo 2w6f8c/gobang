@@ -13,7 +13,7 @@
 #define SCORE_BLOCKED_ONE 5
 #define SCORE_BLOCKED_TWO 10
 #define SCORE_BLOCKED_THREE 360
-#define SCORE_BLOCKED_FOUR 2400
+#define SCORE_BLOCKED_FOUR 1800
 
 
 #include "def.h"
