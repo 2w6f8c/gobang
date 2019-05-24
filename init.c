@@ -56,10 +56,12 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
             // 下棋
         case WM_LBUTTONDOWN:
+            // 已分出胜负则直接返回
             if (winner != NULL_FLAG) {
                 MessageBox(hwnd, TEXT("胜负已决！\n按鼠标滑轮重开"), TEXT("提示"), NULL);
                 return 0;
             }
+
             /**
              * 玩家下棋
              */
@@ -121,15 +123,13 @@ LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             // 绘图
         case WM_PAINT:
             hdc = BeginPaint(hwnd, &ps);
-
-            // 初始化棋盘
             // 绘制棋盘
             DrawChessBoard(hdc, ptLeftTop, cxClient, cyClient);
             // 绘制五个着重点
             DrawFiveHeavyPoint(hdc, ptLeftTop, cxClient, cyClient);
 
             /**
-             * 电脑先手
+             * 电脑先手（增加点难度?）
              */
             POINT point = {7, 7};
             PutChess(point, AI_FLAG);
