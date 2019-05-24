@@ -5,7 +5,7 @@
 #include <windows.h>
 #include "def.h"
 #include "draw.h"
-#include "util.h"
+#include "engine.h"
 
 // ÊÂ¼þÏìÓ¦
 LRESULT CALLBACK MyWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
