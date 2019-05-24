@@ -2,7 +2,10 @@
 
 #define GAME_DRAW
 
-#include<windows.h>
+#define FIVE_MARK_POINT_RADIUS 4
+#define CHESS_PIECE_RADIUS    13
+
+#include <windows.h>
 
 // 绘制黑色实心点
 HRESULT DrawBlackSolidPoint(HDC hdc, int radius, POINT position);

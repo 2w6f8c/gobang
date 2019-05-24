@@ -3,7 +3,6 @@
 #include "engine.h"
 #include <math.h>
 
-
 // 绘制黑色实心点
 HRESULT DrawBlackSolidPoint(HDC hdc, int radius, POINT position) {
     SelectObject(hdc, GetStockObject(BLACK_BRUSH));

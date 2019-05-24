@@ -3,8 +3,6 @@
 #define GAME_DEF
 
 #define BOARD_CELL_NUM 14
-#define FIVE_MARK_POINT_RADIUS 4
-#define CHESS_PIECE_RADIUS    13
 #define PLAYER_FLAG 0
 #define AI_FLAG 1
 #define NULL_FLAG 2
