@@ -10,39 +10,10 @@ const char szClassName[] = "myWindowClass";
 // 记录逻辑位置的数组，其中PLAYER_FLAG为黑子，AI_FLAG为白子，NULL_FLAG为空白
 int board[BOARD_CELL_NUM + 1][BOARD_CELL_NUM + 1];
 // 胜利者
-static int winner = NULL_FLAG;
+int winner = NULL_FLAG;
+// 下子记录栈
+Stack stack = NULL;
 
-static Stack stack = NULL;
-
-// 初始化
-void Init() {
-    winner = NULL_FLAG;
-    for (int i = 0; i < BOARD_CELL_NUM + 1; i++) {
-        for (int j = 0; j < BOARD_CELL_NUM + 1; j++) {
-            board[i][j] = NULL_FLAG;
-            score[AI_FLAG][i][j] = 0;
-            score[PLAYER_FLAG][i][j] = 0;
-        }
-    }
-
-    if (stack) freeStack(stack);
-    stack = newStack();
-
-    // 电脑先手
-    POINT point = {7, 7};
-    PutChess(point, AI_FLAG);
-    printf("========================================\n");
-    printf("computer put at (%d, %d)\n", point.x, point.y);
-}
-
-// 悔棋
-static void Undo() {
-    printf("undo...\n");
-    winner = NULL_FLAG;
-    // 依次撤销电脑落子和玩家落子
-    if(!isEmpty(stack)) UnPutChess(pop(stack));
-    if(!isEmpty(stack)) UnPutChess(pop(stack));
-}
 
 // 事件响应
 // 流程控制

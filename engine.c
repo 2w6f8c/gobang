@@ -1,11 +1,66 @@
 #include "engine.h"
 #include "evaluate.h"
 #include "stdio.h"
+#include "stack.h"
+
+extern int winner;
+extern Stack stack;
+
+// 初始化
+void Init() {
+    winner = NULL_FLAG;
+    for (int i = 0; i < BOARD_CELL_NUM + 1; i++) {
+        for (int j = 0; j < BOARD_CELL_NUM + 1; j++) {
+            board[i][j] = NULL_FLAG;
+            score[AI_FLAG][i][j] = 0;
+            score[PLAYER_FLAG][i][j] = 0;
+        }
+    }
+
+    if (stack) freeStack(stack);
+    stack = newStack();
+
+    // 电脑先手
+    POINT point = {7, 7};
+    PutChess(point, AI_FLAG);
+    printf("========================================\n");
+    printf("computer put at (%d, %d)\n", point.x, point.y);
+}
+
+// 悔棋
+void Undo() {
+    printf("undo...\n");
+    winner = NULL_FLAG;
+    // 依次撤销电脑落子和玩家落子
+    if(!isEmpty(stack)) UnPutChess(pop(stack));
+    if(!isEmpty(stack)) UnPutChess(pop(stack));
+}
+
+// 打印棋盘
+void PrintBoard() {
+    for(int i = 0; i < BOARD_CELL_NUM + 1; i++) {
+        for(int j = 0; j < BOARD_CELL_NUM + 1; j++) {
+            printf("%d ", board[j][i]);
+        }
+        printf("\n");
+    }
+}
+
+// 下子并更新分数
+void PutChess(POINT point, int role) {
+    board[point.x][point.y] = role;
+    UpdateScore(point);
+}
+
+// 取消下子并更新分数
+void UnPutChess(POINT point) {
+    board[point.x][point.y] = NULL_FLAG;
+    UpdateScore(point);
+}
 
 // 判断当前逻辑点的指定方向上是否有相邻点
-HRESULT
-IsSidewardHasSamePoint(POINT point, GameDirection direction,
-                       BOOLEAN *bSame, POINT *movedPoint) {
+void IsSidewardHasSamePoint(POINT point, GameDirection direction,
+                            BOOLEAN *bSame, POINT *movedPoint) {
     // 记录当前点的值
     int curSideValue = board[point.x][point.y];
     // 计算该方向的下一个逻辑点坐标
@@ -60,13 +115,10 @@ IsSidewardHasSamePoint(POINT point, GameDirection direction,
         movedPoint->x = point.x;
         movedPoint->y = point.y;
     }
-
-    return S_OK;
 }
 
 // 计算当前方向过去的同类棋子的个数
-HRESULT CountSameDirectionPointsNumber(POINT point,
-                                      GameDirection direction, int *count) {
+void CountSameDirectionPointsNumber(POINT point, GameDirection direction, int *count) {
     (*count) += 1;
     BOOLEAN bSame = FALSE;
     POINT movedPoint = {point.x, point.y};
@@ -75,12 +127,10 @@ HRESULT CountSameDirectionPointsNumber(POINT point,
         bSame = FALSE;
         CountSameDirectionPointsNumber(movedPoint, direction, count);
     }
-
-    return S_OK;
 }
 
 // 判定是否胜利
-HRESULT IsSomeoneWin(int *winner) {
+void IsSomeoneWin(int *winner) {
     // 计算连续竖着的胜利
     for (int row = 0; row < BOARD_CELL_NUM + 1; ++row) {
         for (int col = 0; col < BOARD_CELL_NUM + 1; ++col) {
@@ -98,28 +148,4 @@ HRESULT IsSomeoneWin(int *winner) {
             }
         }
     }
-
-    return S_OK;
-}
-
-// 打印棋盘
-void PrintBoard() {
-    for(int i = 0; i < BOARD_CELL_NUM + 1; i++) {
-        for(int j = 0; j < BOARD_CELL_NUM + 1; j++) {
-            printf("%d ", board[j][i]);
-        }
-        printf("\n");
-    }
-}
-
-// 下子并更新分数
-void PutChess(POINT point, int role) {
-    board[point.x][point.y] = role;
-    UpdateScore(point);
-}
-
-// 取消下子并更新分数
-void UnPutChess(POINT point) {
-    board[point.x][point.y] = NULL_FLAG;
-    UpdateScore(point);
 }
