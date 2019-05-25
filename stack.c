@@ -18,7 +18,7 @@ int isEmpty(Stack stack) {
 
 void push(Stack stack, T data) {
     Node* node = NULL;
-    node = malloc(sizeof(node));
+    node = malloc(sizeof(Node));
     if(node == NULL) exit(0);
     node -> next = stack -> next;
     node -> data = data;
