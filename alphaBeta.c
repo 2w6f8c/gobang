@@ -93,11 +93,11 @@ POINT NextPoint(int depth) {
 
     }
 
-    printf("搜索深度: %d\n", ALPHA_BETA_DEPTH);
-    printf("α剪枝次数: %d\n", alphaCount);
-    printf("β剪枝次数: %d\n", betaCount);
-    printf("棋局评分次数: %d\n", times);
-    printf("耗时: %.3fs\n", (clock() - start) / CLOCKS_PER_SEC);
+    printf("search depth: %d\n", ALPHA_BETA_DEPTH);
+    printf("α-pruning times: %d\n", alphaCount);
+    printf("β-pruning times: %d\n", betaCount);
+    printf("evaluate times: %d\n", times);
+    printf("time consumed: %.3fs\n", (clock() - start) / CLOCKS_PER_SEC);
 
     return result;
 
