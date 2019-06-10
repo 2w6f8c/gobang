@@ -1,5 +1,4 @@
 //
-// Created by 2w6f8c on 2019/5/20.
 // 核心算法大量参考https://github.com/lihongxun945/gobang/blob/master/src/ai/evaluate-point.js
 //
 

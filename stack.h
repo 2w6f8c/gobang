@@ -1,7 +1,3 @@
-//
-// Created by 2w6f8c on 2019/5/24.
-//
-
 #ifndef GOBANG_STACK_H
 #define GOBANG_STACK_H
 

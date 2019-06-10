@@ -1,7 +1,3 @@
-//
-// Created by 2w6f8c on 2019/5/20.
-//
-
 #ifndef GOBANG_ALPHABETA_H
 #define GOBANG_ALPHABETA_H
 
